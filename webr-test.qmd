@@ -1,0 +1,128 @@
+---
+title: "webR integration test"
+format: live-html
+engine: knitr
+
+resources:
+  - data/tcc_data_panel-canonical-mercosur_1990-2023_2026-10-21_v01.csv
+
+webr:
+  packages:
+    - cointReg
+  resources:
+    - data/tcc_data_panel-canonical-mercosur_1990-2023_2026-10-21_v01.csv
+---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Browser R
+
+```{webr}
+R.version.string
+1 + 1
+summary(lm(mpg ~ wt, data = mtcars))
+```
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## cointReg
+
+```{webr}
+packageVersion("cointReg")
+library(cointReg)
+
+exists(
+  "cointRegFM",
+  where = asNamespace("cointReg"),
+  inherits = FALSE
+)
+```
+
+## Certified ARG–E1 reproduction
+
+```{webr}
+library(cointReg)
+
+# Certified canonical panel
+dat <- read.csv(
+  "data/tcc_data_panel-canonical-mercosur_1990-2023_2026-10-21_v01.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Structural checks
+stopifnot(nrow(dat) == 170)
+stopifnot(setequal(unique(dat$iso3), c("ARG", "BOL", "BRA", "PRY", "URY")))
+
+# Transformations used by the certified specification
+dat$y_excl <- log(dat$ghgpc_tco2e_excl_lulucf)
+dat$ln_gdp <- log(dat$gdp_pc_const2015_usd)
+
+common_center <- mean(dat$ln_gdp)
+
+arg <- dat[dat$iso3 == "ARG", ]
+arg <- arg[order(arg$year), ]
+
+stopifnot(nrow(arg) == 34)
+stopifnot(identical(as.integer(arg$year), 1990:2023))
+
+# Country-local centering
+local_center <- mean(arg$ln_gdp)
+z <- arg$ln_gdp - local_center
+
+X <- cbind(
+  income  = z,
+  income2 = z^2
+)
+
+D <- matrix(1, nrow = nrow(arg), ncol = 1)
+colnames(D) <- "intercept"
+
+fit <- cointReg::cointRegFM(
+  x = X,
+  y = as.numeric(arg$y_excl),
+  deter = D,
+  kernel = "ba",
+  bandwidth = 3L,
+  demeaning = FALSE,
+  check = TRUE
+)
+
+theta_local <- as.numeric(fit$theta)
+names(theta_local) <- c("intercept", "income", "income2")
+
+# Re-express from ARG-local center to common panel center
+delta <- common_center - local_center
+
+J <- matrix(
+  c(
+    1, delta, delta^2,
+    0, 1,     2 * delta,
+    0, 0,     1
+  ),
+  nrow = 3,
+  byrow = TRUE
+)
+
+theta_common <- drop(J %*% theta_local)
+names(theta_common) <- c("intercept", "income", "income2")
+
+# Previously certified ARG–E1 benchmark
+expected <- c(
+  intercept = 2.00937743,
+  income    = 0.19851055,
+  income2   = 0.03235887
+)
+
+diff <- theta_common - expected
+
+theta_common
+expected
+diff
+
+cat(
+  "Maximum absolute coefficient difference:",
+  format(max(abs(diff)), scientific = TRUE),
+  "\n"
+)
+```
