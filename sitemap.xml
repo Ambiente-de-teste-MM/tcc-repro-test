@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://Ambiente-de-teste-MM.github.io/tcc-repro-test/index.html</loc>
-    <lastmod>2026-10-29T00:48:23.754Z</lastmod>
+    <loc>https://Ambiente-de-teste-MM.github.io/tcc-repro-test/webr-test.html</loc>
+    <lastmod>2026-10-29T01:11:57.136Z</lastmod>
   </url>
   <url>
     <loc>https://Ambiente-de-teste-MM.github.io/tcc-repro-test/about.html</loc>
     <lastmod>2026-10-29T00:25:07.099Z</lastmod>
+  </url>
+  <url>
+    <loc>https://Ambiente-de-teste-MM.github.io/tcc-repro-test/index.html</loc>
+    <lastmod>2026-10-29T00:48:23.754Z</lastmod>
   </url>
 </urlset>

@@ -1,5 +1,26 @@
 [
   {
+    "objectID": "webr-test.html#cointreg",
+    "href": "webr-test.html#cointreg",
+    "title": "webR integration test",
+    "section": "cointReg",
+    "text": "cointReg"
+  },
+  {
+    "objectID": "webr-test.html#certified-arge1-reproduction",
+    "href": "webr-test.html#certified-arge1-reproduction",
+    "title": "webR integration test",
+    "section": "Certified ARG–E1 reproduction",
+    "text": "Certified ARG–E1 reproduction"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "tcc-repro-test",
@@ -12,12 +33,5 @@
     "title": "tcc-repro-test",
     "section": "SVG test",
     "text": "SVG test"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
   }
 ]
