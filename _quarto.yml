@@ -1,6 +1,9 @@
 project:
   type: website
-
+  resources:
+    - diagram-viewer.html
+    - images/test-diagram.svg
+    
 website:
   title: "tcc-repro-test"
   navbar:

@@ -8,4 +8,8 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ## SVG test
 
-![Test diagram](images/test-diagram.svg)
+<iframe
+  class="diagram-iframe"
+  src="diagram-viewer.html"
+  title="Interactive methodology diagram">
+</iframe>
